@@ -1,0 +1,83 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible"
+    content="ie=edge">
+  <title>Mouse goes opposite</title>
+</head>
+
+<body>
+  <style>
+    body {
+      overflow: hidden;
+      background: papayawhip;
+      background-image: url(img3.jpg);
+      background-size: cover;
+    }
+
+    #rod {
+      width: 20vw;
+      height: 20vw;
+      background-color: black;
+      opacity: .7;
+      position: absolute;
+      color: white;
+    }
+  </style>
+
+  <div id="rod"></div>
+  <script>
+    window.addEventListener("load", init);
+
+    let rod = document.querySelector("#rod");
+    let centerX = window.innerWidth / 2; //
+    let centerY = window.innerHeight / 2; //
+    let mouseX = 0,
+      mouseY = 0;
+    let xp = centerX,
+      yp = centerY;
+    let steps = 30;
+
+    function init() {
+      rod.style.left = centerX - (rod.clientWidth / 2) + "px"; //center
+      rod.style.top = centerY - (rod.clientHeight / 2) + "px"; //middle
+      document.addEventListener("mousemove", mouseMove);
+      moveRAF();
+    }
+
+    function mouseMove(e) {
+      mouseX = e.pageX;
+      mouseY = e.pageY;
+    }
+
+    function moveRAF() {
+      xp = rod.offsetLeft;
+      yp = rod.offsetTop;
+
+      xp += ((centerX - mouseX) / steps);
+      yp += ((centerY - mouseY) / steps);
+
+      if (xp < 0) {
+        xp = 0;
+      }
+      if (yp < 0) {
+        yp = 0;
+      }
+      if (xp > window.innerWidth - rod.offsetWidth) {
+        xp = window.innerWidth - rod.offsetWidth;
+      }
+      if (yp > window.innerHeight - rod.offsetHeight) {
+        yp = window.innerHeight - rod.offsetHeight;
+      }
+
+      rod.style.left = xp + "px";
+      rod.style.top = yp + "px";
+      requestAnimationFrame(moveRAF);
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+  <title>Mouse</title>
+  <style>
+    body {
+      background-color: papayawhip;
+      background-image: url(img3.jpg);
+      background-size: cover;
+    }
+
+    #red {
+      width: 20vw;
+      height: 20vw;
+      position: absolute;
+      background-color: black;
+      opacity: .7;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="red"></div>
+  <script>
+    const red = document.querySelector("#red");
+    let redCX = red.clientWidth / 2;
+    let redCY = red.clientHeight / 2;
+    let mouseX, mouseY;
+    let redPX, redPY;
+    let steps = 30;
+
+    document.addEventListener("DOMContentLoaded", init);
+
+    function init() {
+      document.addEventListener("mousemove", mouseMove);
+      moveRAF();
+    }
+
+    function mouseMove(e) {
+      mouseX = e.pageX;
+      mouseY = e.pageY;
+    }
+
+    function moveRAF() {
+      redPX = red.offsetLeft;
+      redPY = red.offsetTop;
+      redPX += (mouseX - redPX - redCX) / steps;
+      redPY += (mouseY - redPY - redCY) / steps;
+      red.style.left = redPX + "px";
+      red.style.top = redPY + "px";
+      requestAnimationFrame(moveRAF);
+    }
+
+
+
+
+
+
+
+
+    // console.log(e);
+
+    // red.style.left = e.pageX - redCX + "px";
+    // red.style.top = e.pageY - redCY + "px";
+
+    // if (e.pageX <= 0 + redCX) {
+    //   red.style.left = 0 + redCX + "px";
+    // }
+
+    // if (e.pageY <= 0 + redCY) {
+    //   red.style.top = 0 + redCY + "px";
+
+    //   if (e.pageY >= window.innerHeight - redCY) {
+    //     red.style.top = window.innerHeight - redCYt + "px";
+    //   }
+    //   if (e.pageX >= window.innerWidth - redCX) {
+    //     red.style.left = window.innerWidth - redCX + "px";
+    //   }
+    // }
+  </script>
+</body>
+
+</html>

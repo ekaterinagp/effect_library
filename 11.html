@@ -1,0 +1,140 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible"
+    content="ie=edge">
+  <title>Document</title>
+  <style>
+    body {
+      overflow: hidden;
+      background: papayawhip;
+      background-image: url(img3.jpg);
+      background-size: cover;
+    }
+
+    #magenta,
+    #aqua,
+    #yellow {
+      width: 20vw;
+      height: 20vw;
+      position: absolute;
+    }
+
+    #magenta {
+      background: rgb(71, 70, 71);
+    }
+
+    #yellow {
+      background: rgb(119, 136, 153);
+    }
+
+    #aqua {
+      background: rgb(118, 133, 133);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="magenta"
+    class="fo"></div>
+  <div id="yellow"
+    class="fo"></div>
+  <div id="aqua"
+    class="fo"></div>
+  <script>
+    // more elements, different speeds - added parameters to RAF = moveRAF(elm, steps); and stops while moving up front- 3 differenr RAFs
+    window.addEventListener("load", init);
+
+    let magenta = document.querySelector("#magenta");
+    let yellow = document.querySelector("#yellow");
+    let aqua = document.querySelector("#aqua");
+    let centerX = window.innerWidth / 2; //
+    let centerY = window.innerHeight / 2; //
+    let mouseX = 0,
+      mouseY = 0;
+    let RAF;
+    let moving = false;
+
+    function init() {
+      magenta.style.left = centerX - (magenta.clientWidth / 2) + "px"; //center
+      magenta.style.top = centerY - (magenta.clientHeight / 2) + "px"; //middle
+      yellow.style.left = centerX - (yellow.clientWidth / 2) + "px"; //center
+      yellow.style.top = centerY - (yellow.clientHeight / 2) + "px"; //middle
+      aqua.style.left = centerX - (aqua.clientWidth / 2) + "px"; //center
+      aqua.style.top = centerY - (aqua.clientHeight / 2) + "px"; //middle
+      document.addEventListener("mousemove", mouseMove);
+      magenta.addEventListener("click", toggle);
+      yellow.addEventListener("click", toggle);
+      aqua.addEventListener("click", toggle);
+    }
+
+    function mouseMove(e) {
+      mouseX = e.pageX;
+      mouseY = e.pageY;
+    }
+
+    function toggle(e) {
+      if (moving) {
+        e.target.parentNode.appendChild(e.target);
+        cancelAnimationFrame(RAF);
+      } else {
+        e.target.parentNode.appendChild(e.target);
+        RAF = requestAnimationFrame(raf);
+      }
+      moving = !moving;
+    }
+
+    function raf() {
+      move(magenta, 100);
+      move(yellow, 60);
+      move(aqua, 20);
+      RAF = requestAnimationFrame(raf);
+    }
+
+    function move(elm, steps) {
+      //console.log(elm.style);
+      xp = elm.offsetLeft;
+      yp = elm.offsetTop;
+
+      xp += ((centerX - mouseX) / steps);
+      yp += ((centerY - mouseY) / steps);
+
+      //elm is smaller than stage
+      if (xp < 0) {
+        xp = 0;
+      }
+      if (yp < 0) {
+        yp = 0;
+      }
+      if (xp > window.innerWidth - elm.offsetWidth) {
+        xp = window.innerWidth - elm.offsetWidth;
+      }
+      if (yp > window.innerHeight - elm.offsetHeight) {
+        yp = window.innerHeight - elm.offsetHeight;
+      }
+
+      /*    
+      //elm is bigger than stage
+      if (xp > 0) {
+          xp = 0;
+      }
+      if (yp > 0) {
+          yp = 0;
+      }
+      if (xp < window.innerWidth - elm.offsetWidth) {
+          xp = window.innerWidth - elm.offsetWidth;
+      }
+      if (yp < window.innerHeight - elm.offsetHeight) {
+          yp = window.innerHeight - elm.offsetHeight;
+      }*/
+
+      elm.style.left = xp + "px";
+      elm.style.top = yp + "px";
+    }
+  </script>
+</body>
+
+</html>

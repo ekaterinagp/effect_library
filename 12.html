@@ -1,0 +1,126 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible"
+    content="ie=edge">
+  <title>Background</title>
+
+  <style>
+    body {
+      overflow: hidden;
+    }
+
+    #bg1 {
+      width: calc(120vw*1.8);
+      height: calc(86vw*1.8);
+      position: absolute;
+      background-image: url(tree.jpg);
+      background-size: cover;
+      z-index: 0;
+    }
+
+    #bg2 {
+      width: calc(102.4vw*2.8);
+      height: calc(76.8vw*2.8);
+      position: absolute;
+      background-image: url(tree_transp.png);
+      background-size: 100% 100%;
+      z-index: 1;
+      opacity: 0.3;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="bg1"></div>
+  <div id="bg2"></div>
+  <script>
+    //different sizes
+    window.addEventListener("load", init);
+
+    let bg1 = document.querySelector("#bg1");
+    let bg2 = document.querySelector("#bg2");
+    let centerX = window.innerWidth / 2; //
+    let centerY = window.innerHeight / 2; //
+    let mouseX = 0,
+      mouseY = 0;
+    let RAF;
+    let moving = false;
+
+    function init() {
+      bg1.style.left = centerX - (bg1.clientWidth / 2) + "px"; //center
+      bg1.style.top = centerY - (bg1.clientHeight / 2) + "px"; //middle
+      bg2.style.left = centerX - (bg2.clientWidth / 2) + "px"; //center
+      bg2.style.top = centerY - (bg2.clientHeight / 2) + "px"; //middle
+      document.addEventListener("mousemove", mouseMove);
+      bg1.addEventListener("click", toggle);
+      bg2.addEventListener("click", toggle);
+    }
+
+    function mouseMove(e) {
+      mouseX = e.pageX;
+      mouseY = e.pageY;
+    }
+
+    function toggle(e) {
+      if (moving) {
+        cancelAnimationFrame(RAF);
+      } else {
+        RAF = requestAnimationFrame(raf);
+      }
+      moving = !moving;
+    }
+
+    function raf() {
+      move(bg1, 80);
+      move(bg2, 40);
+      RAF = requestAnimationFrame(raf);
+    }
+
+    function move(elm, steps) {
+      //console.log(elm.style);
+      xp = elm.offsetLeft;
+      yp = elm.offsetTop;
+
+      xp += ((centerX - mouseX) / steps);
+      yp += ((centerY - mouseY) / steps);
+      /*
+      //elm is smaller than stage
+      if (xp < 0) {
+          xp = 0;
+      }
+      if (yp < 0) {
+          yp = 0;
+      }
+      if (xp > window.innerWidth - elm.offsetWidth) {
+          xp = window.innerWidth - elm.offsetWidth;
+      }
+      if (yp > window.innerHeight - elm.offsetHeight) {
+          yp = window.innerHeight - elm.offsetHeight;
+      }
+      */
+
+      //elm is bigger than stage
+      if (xp > 0) {
+        xp = 0;
+      }
+      if (yp > 0) {
+        yp = 0;
+      }
+      if (xp < window.innerWidth - elm.offsetWidth) {
+        xp = window.innerWidth - elm.offsetWidth;
+      }
+      if (yp < window.innerHeight - elm.offsetHeight) {
+        yp = window.innerHeight - elm.offsetHeight;
+      }
+
+      elm.style.left = xp + "px";
+      elm.style.top = yp + "px";
+    }
+  </script>
+</body>
+
+</html>
